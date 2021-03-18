@@ -5,7 +5,9 @@ const d = document,
   $TemplateArrivals = d.getElementById("template-arrivals").content,
   $fragment = d.createDocumentFragment();
 
-const getAll = async () => {
+//Departures
+
+const getDepartures = async () => {
   try {
     let res = await fetch("http://localhost:3000/departureFlights"),
       json = await res.json();
@@ -20,17 +22,11 @@ const getAll = async () => {
         element.airportName;
       $TemplateDepartures.querySelector(".flight-number").textContent =
         element.flightNumber;
-      //   $TemplateArrivals.querySelector(".time").textContent = element.time;
-      //   $TemplateArrivals.querySelector(".airport").textContent =
-      //     element.airportName;
-      //   $TemplateArrivals.querySelector(".flight-number").textContent =
-      //     element.flightNumber;
 
       let $clone = d.importNode($TemplateDepartures, true);
       $fragment.appendChild($clone);
-
-      $departures.querySelector("template").appendChild($fragment);
     });
+    $departures.querySelector("p").appendChild($fragment);
   } catch (err) {
     console.log(err);
     let message = err.statusText || "We couldn't get the status of the flights";
@@ -40,7 +36,9 @@ const getAll = async () => {
     );
   }
 };
-d.addEventListener("DOMContentLoaded", getAll);
+d.addEventListener("DOMContentLoaded", getDepartures);
+
+//Arrivals
 const getArrivals = async () => {
   try {
     let res = await fetch("http://localhost:3000/arrivalFlights"),
@@ -59,13 +57,12 @@ const getArrivals = async () => {
 
       let $clone = d.importNode($TemplateArrivals, true);
       $fragment.appendChild($clone);
-
-      $arrivals.querySelector(".template-arrivals").appendChild($fragment);
     });
+    $arrivals.querySelector("p").appendChild($fragment);
   } catch (err) {
     console.log(err);
     let message = err.statusText || "We couldn't get the status of the flights";
-    $departures.insertAdjacentHTML(
+    $arrivals.insertAdjacentHTML(
       "afterend",
       `<p><b>Error ${err.status}: ${message}</p></b>`
     );
